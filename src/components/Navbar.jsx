@@ -55,7 +55,7 @@ export default function Navbar() {
         </div>
 
         <div className="nav-actions">
-          <a href="/Certificates/Aditya_Mahale_GenAI.pdf" target="_blank" rel="noopener" className="resume-btn" id="resume-btn">
+          <a href="/Certificates/Aditya_Mahale_Resume.pdf" download="Aditya_Mahale_Resume.pdf" target="_blank" rel="noopener" className="resume-btn" id="resume-btn">
             <span>Resume</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>

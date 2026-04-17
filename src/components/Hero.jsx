@@ -118,8 +118,8 @@ export default function Hero() {
             </svg>
           </a>
           <a
-            href="/Certificates/Resume Aditya Mahale.pdf"
-            download="Aditya_Mahale_Resume.pdf"
+            href="/Certificates/Aditya_Mahale_GenAI.pdf"
+            download="Aditya_Mahale_GenAI.pdf"
             className="btn-ghost"
             id="hero-resume-btn"
           >
