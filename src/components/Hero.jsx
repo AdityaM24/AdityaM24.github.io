@@ -119,7 +119,8 @@ export default function Hero() {
           </a>
           <a
             href="/Certificates/Aditya_Mahale_GenAI.pdf"
-            download="Aditya_Mahale_GenAI.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-ghost"
             id="hero-resume-btn"
           >
