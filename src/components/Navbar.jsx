@@ -1,77 +1,117 @@
 import { useState, useEffect } from 'react'
+import Logo from './ui/Logo'
+import SocialButtons from './ui/SocialButtons'
 
 const links = [
-  { label: 'About', href: '#about' },
+  { label: 'Home', href: '#home' },
   { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#projects' },
+  { label: 'Projects', href: '#portfolio' },
   { label: 'Skills', href: '#skills' },
-  { label: 'Certifications', href: '#certifications' },
   { label: 'Contact', href: '#contact' },
 ]
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [active, setActive] = useState('')
+  const [active, setActive] = useState('home')
 
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 50)
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
 
-      // Active section tracking
-      const sections = ['about', 'experience', 'projects', 'skills', 'certifications', 'contact']
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i])
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActive(sections[i])
-          break
-        }
+  useEffect(() => {
+    const sections = ['home', 'experience', 'portfolio', 'skills', 'contact']
+    const offset = 120
+
+    const updateActive = () => {
+      const position = window.scrollY + offset
+      let current = sections[0]
+
+      for (const id of sections) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const top = window.scrollY + el.getBoundingClientRect().top
+        if (position >= top) current = id
       }
+
+      setActive(current)
     }
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+
+    updateActive()
+    window.addEventListener('scroll', updateActive, { passive: true })
+    window.addEventListener('resize', updateActive)
+    return () => {
+      window.removeEventListener('scroll', updateActive)
+      window.removeEventListener('resize', updateActive)
+    }
   }, [])
 
   const close = () => setOpen(false)
 
   return (
-    <nav className={`navbar${scrolled ? ' scrolled' : ''}`} id="navbar">
-      <div className="nav-inner">
-        <a href="#home" className="nav-logo" onClick={close}>
-          AM<span className="logo-dot">.</span>
-        </a>
-
-        <div className={`nav-links${open ? ' open' : ''}`} id="nav-links">
-          {links.map(({ label, href }) => (
-            <a
-              key={href}
-              href={href}
-              className={`nav-link${active === href.slice(1) ? ' active' : ''}`}
-              onClick={close}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
-
-        <div className="nav-actions">
-          <a href="/Certificates/Aditya_Mahale_GenAI.pdf" target="_blank" rel="noopener noreferrer" className="resume-btn" id="resume-btn">
-            <span>Resume</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
-          </a>
-
-          <button
-            className={`hamburger${open ? ' active' : ''}`}
-            id="hamburger"
-            aria-label="Toggle menu"
-            onClick={() => setOpen(o => !o)}
-          >
-            <span /><span /><span />
-          </button>
+    <header className="navbar border-bottom">
+      <div className="navbar-space" />
+      <div className="navbar-inner">
+        <div className="container">
+          <nav className="nav-menu-grid">
+            <Logo />
+            <ul className="nav-menu">
+              {links.map(({ label, href }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    className={`nav-link${active === href.slice(1) ? ' active' : ''}`}
+                    {...(active === href.slice(1) ? { 'aria-current': 'page' } : {})}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <div className="navbar-button-wrapper">
+              <SocialButtons />
+            </div>
+          </nav>
         </div>
       </div>
-    </nav>
+
+      <div className="navbar-inner-mobile">
+        <div className="container">
+          <div className="navbar-wrapper-mobile">
+            <Logo className="navbar-brand-mobile" />
+            <button
+              className={`menu-button${open ? ' open' : ''}`}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+              onClick={() => setOpen((o) => !o)}
+            >
+              <div className="burger">
+                <div className="burger-line cc-top" />
+                <div className="burger-line cc-middle" />
+                <div className="burger-line cc-bottom" />
+              </div>
+            </button>
+          </div>
+        </div>
+        <nav className={`nav-menu-wrapper-mobile${open ? ' open' : ''}`}>
+          <div className="nav-menu-flex-mobile">
+            <ul className="nav-menu">
+              {links.map(({ label, href }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    className={`nav-link-mobile${active === href.slice(1) ? ' active' : ''}`}
+                    onClick={close}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div className="navbar-space" />
+    </header>
   )
 }

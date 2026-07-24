@@ -1,44 +1,10 @@
 import { useState } from 'react'
-
-const ArrowIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-  </svg>
-)
-
-const socials = [
-  {
-    id: 'social-linkedin',
-    name: 'LinkedIn',
-    handle: '@adityam24',
-    href: 'https://www.linkedin.com/in/adityam24',
-    img: '/Images/linkidin.png',
-  },
-  {
-    id: 'social-github',
-    name: 'GitHub',
-    handle: '@AdityaM24',
-    href: 'https://github.com/AdityaM24',
-    img: '/Images/github.png',
-  },
-  {
-    id: 'social-instagram',
-    name: 'Instagram',
-    handle: '@adityyaaindeed',
-    href: 'https://www.instagram.com/adityyaaindeed/',
-    img: '/Images/insta.png',
-  },
-  {
-    id: 'social-email',
-    name: 'Email',
-    handle: 'adityamahale76@gmail.com',
-    href: 'mailto:adityamahale76@gmail.com',
-    img: '/Images/gmail.png',
-  },
-]
+import Badge from './ui/Badge'
+import Logo from './ui/Logo'
+import SocialButtons from './ui/SocialButtons'
 
 export default function Contact() {
-  const [status, setStatus] = useState('idle') // idle | sending | success | error
+  const [status, setStatus] = useState('idle')
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -50,7 +16,7 @@ export default function Contact() {
         body: new FormData(form),
       })
       const result = await resp.json().catch(() => null)
-      if (resp.ok && result && result.success) {
+      if (resp.ok && result?.success) {
         setStatus('success')
         form.reset()
         setTimeout(() => setStatus('idle'), 4000)
@@ -65,92 +31,111 @@ export default function Contact() {
   }
 
   return (
-    <section className="section section-alt" id="contact">
-      <div className="section-inner">
-        <div className="section-header animate-on-scroll">
-          <span className="section-tag">06. Contact</span>
-          <h2 className="section-title">Let's Build Together</h2>
-          <p className="section-sub">Open to internships, full-time roles, freelance projects, and interesting collaborations.</p>
-        </div>
+    <section className="footer" id="contact">
 
-        <div className="contact-grid">
-          {/* Left — info + socials */}
-          <div className="contact-left">
-            <div className="contact-info-block">
-              <h3>Get in Touch</h3>
-              <p>Whether you have a project in mind, a role to discuss, or just want to chat about AI — my inbox is always open.</p>
-            </div>
-            <div className="social-grid">
-              {socials.map((s, i) => (
-                <a
-                  key={s.id}
-                  id={s.id}
-                  href={s.href}
-                  target={s.href.startsWith('mailto') ? undefined : '_blank'}
-                  rel="noopener noreferrer"
-                  className="social-card animate-on-scroll"
-                  style={{ transitionDelay: `${i * 0.08}s` }}
-                >
-                  <div className="social-icon">
-                    <img src={s.img} alt={s.name} />
+      <div className="wrapper background-purple">
+        <div className="overflow background-white" aria-hidden="true" />
+        <div className="container cc-narrow">
+          <div className="contact">
+            <div className="contact-card animate-on-scroll">
+              <div className="headline-contact">
+                <Badge>Contact</Badge>
+                <h2 className="display-2">Let&apos;s Connect!</h2>
+                <p className="contact-lead margin-bottom-none">
+                  Open to internships, full-time roles, freelance projects, and interesting collaborations.
+                </p>
+              </div>
+
+              <div className="contact-form-block">
+                <form onSubmit={handleSubmit} aria-label="Contact form">
+                  <input type="hidden" name="access_key" value="c78d5412-b3b4-4817-b399-d028df614d62" />
+
+                  <div className="form-fields-grid">
+                    <div className="form-field">
+                      <input
+                        className="text-field"
+                        name="name"
+                        placeholder="Full Name *"
+                        required
+                      />
+                    </div>
+                    <div className="form-field">
+                      <input
+                        className="text-field"
+                        name="email"
+                        type="email"
+                        placeholder="Email *"
+                        required
+                      />
+                    </div>
+                    <div className="form-field form-field-full">
+                      <input
+                        className="text-field"
+                        name="phone"
+                        type="tel"
+                        placeholder="Phone (optional)"
+                      />
+                    </div>
+                    <div className="form-field form-field-full">
+                      <textarea
+                        className="textarea"
+                        name="message"
+                        placeholder="Message *"
+                        required
+                      />
+                    </div>
                   </div>
-                  <div className="social-meta">
-                    <span className="social-name">{s.name}</span>
-                    <span className="social-handle">{s.handle}</span>
+
+                  <button
+                    type="submit"
+                    className="button cc-center"
+                    disabled={status === 'sending'}
+                  >
+                    <div className="button-front">
+                      <div className="button-text">
+                        {status === 'sending' ? 'Please wait...'
+                          : status === 'success' ? 'Sent!'
+                          : 'Submit'}
+                      </div>
+                    </div>
+                    <div className="button-edge" />
+                  </button>
+                </form>
+
+                {status === 'success' && (
+                  <div className="success-message" role="status">
+                    Thank you! Your submission has been received!
                   </div>
-                  <ArrowIcon className="social-arrow" />
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Right — form */}
-          <div className="contact-right animate-on-scroll">
-            <form className="contact-form-new" onSubmit={handleSubmit} id="contact-form">
-              <input type="hidden" name="access_key" value="c78d5412-b3b4-4817-b399-d028df614d62" />
-              <input type="hidden" name="redirect" value="https://web3forms.com/success" />
-
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="contact-name">Full Name</label>
-                  <input type="text" id="contact-name" name="name" placeholder="John Doe" required />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="contact-email">Email</label>
-                  <input type="email" id="contact-email" name="email" placeholder="john@example.com" required />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="contact-phone">Phone (optional)</label>
-                <input type="tel" id="contact-phone" name="phone" placeholder="+91 98765 43210" />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="contact-message">Message</label>
-                <textarea id="contact-message" name="message" rows="5" placeholder="Tell me about your project or opportunity..." required />
-              </div>
-
-              <button
-                type="submit"
-                className="btn-primary form-submit-btn"
-                id="form-submit-btn"
-                disabled={status === 'sending'}
-              >
-                <span className="btn-text">
-                  {status === 'idle' && 'Send Message'}
-                  {status === 'sending' && 'Sending...'}
-                  {status === 'success' && '✓ Message Sent!'}
-                  {status === 'error' && 'Failed — Try Again'}
-                </span>
-                {status === 'idle' && (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="22" y1="2" x2="11" y2="13"/>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                  </svg>
                 )}
-              </button>
-            </form>
+                {status === 'error' && (
+                  <div className="error-message" role="alert">
+                    Oops! Something went wrong while submitting the form.
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="site-details">
+              <div className="footer-row margin-bottom-30">
+                <Logo />
+                <ul className="footer-nav">
+                  <li><a href="#portfolio" className="footer-nav-link"><div>Portfolio</div></a></li>
+                  <li><a href="#experience" className="footer-nav-link"><div>Experience</div></a></li>
+                  <li><a href="/Certificates/Aditya_Mahale_Resume.pdf" target="_blank" rel="noopener noreferrer" className="footer-nav-link"><div>Resume</div></a></li>
+                </ul>
+              </div>
+              <div className="footer-row">
+                <p className="margin-bottom-none">
+                  © {new Date().getFullYear()} Aditya Mahale.
+                </p>
+                <div className="navbar-button-wrapper">
+                  <SocialButtons />
+                </div>
+              </div>
+            </div>
+
+            <img src="/meelo/644bbd1ada258e858c833ac1_doodle-12.svg" alt="" className="doodle-cloud" />
+            <img src="/meelo/644bbd93e44f1f7289efc855_doodle-11.svg" alt="" className="doodle-envelope" />
           </div>
         </div>
       </div>

@@ -1,89 +1,45 @@
-import { useEffect, useRef } from 'react'
-
-const timelineItems = [
-  {
-    year: '2020',
-    title: '10th Grade — CBSE',
-    desc: 'Sri Ma Vidyalaya, Thane, Mumbai\nStrong foundation in Science & Mathematics',
-  },
-  {
-    year: '2022',
-    title: '12th Grade — PCM',
-    desc: 'ShubhamRaje Jr. College, Thane\nPCM stream · Intro to Web Development',
-  },
-  {
-    year: '2022 – 26',
-    title: 'B.Tech — ENTC (Minor: Data Science)',
-    desc: 'MIT Academy of Engineering, Pune · GPA: 8.3 / 10.0\nSpecializing in ML, AI & Data Science',
-    active: true,
-  },
-  {
-    year: 'July – Nov 2025',
-    title: 'Software Intern · Geany Softech',
-    desc: 'LangGraph agents · FastAPI · Power BI · MySQL\nLLM pipelines for production AI systems',
-    pulse: true,
-  },
-]
-
-const tags = [
-  'Python', 'LangGraph', 'RAG', 'FastAPI', 'Machine Learning',
-  'Power BI', 'SQL', 'Docker', 'PyTorch', 'LLM Agents',
-]
+import Badge from './ui/Badge'
+import Button from './ui/Button'
 
 export default function About() {
-  const itemsRef = useRef([])
-
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      entries => entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target) }
-      }),
-      { threshold: 0.15 }
-    )
-    itemsRef.current.forEach(el => el && io.observe(el))
-    return () => io.disconnect()
-  }, [])
-
   return (
-    <section className="section" id="about">
-      <div className="section-inner">
-        <div className="section-header animate-on-scroll">
-          <span className="section-tag">01. About</span>
-          <h2 className="section-title">My Journey</h2>
-        </div>
-
-        <div className="about-grid">
-          <div className="about-text-col animate-on-scroll">
-            <p className="about-lead">
-              Final-year <strong>B.Tech (ENTC + Minor: Data Science)</strong> student at MIT Academy of Engineering, Pune, with a <strong>GPA of 8.3/10</strong>. I build production-grade AI systems that go beyond notebooks.
-            </p>
-            <p className="about-body">
-              At <strong>Geany Softech Pvt. Ltd.</strong>, I architected multi-agent LangGraph systems for PDF summarization, NL-to-CRON scheduling, and automated email workflows. I also built FastAPI inference layers, MySQL-backed session memory, and Power BI dashboards monitoring <strong>10,000+ IoT sensor records</strong>.
-            </p>
-            <p className="about-body">
-              Beyond the internship, I've filed a <strong>patent for an ML-based personalized nutrition system</strong>, placed Runner-Up in Datathon 2025, and built end-to-end ML/AI projects from churn prediction to natural language SQL engines.
-            </p>
-            <div className="about-tags">
-              {tags.map(t => <span key={t} className="tag">{t}</span>)}
+    <section id="home" className="section">
+      <div className="wrapper background-purple border-bottom overflow-hidden">
+        <div className="container">
+          <div className="hero-grid">
+            <div className="hero-content animate-on-scroll">
+              <Badge>Hello!</Badge>
+              <h1 className="display-1 hero-title margin-bottom-15">
+                I&apos;m Aditya Mahale,<br />
+                an <span className="underline">AI/ML</span> engineer.
+              </h1>
+              <p className="hero-subtitle margin-bottom-15">
+                ML Applications · Agentic Systems · Full-Stack
+              </p>
+              <p className="paragraph-large hero-text margin-bottom-15">
+                AI/ML engineer from Pune who ships end-to-end: models, APIs, frontends, and deployment.
+                B.Tech ENTC with Honours in Data Science (CGPA 8.5) at MIT Academy of Engineering.
+              </p>
+              <p className="hero-text margin-bottom-30">
+                I&apos;ve built LangGraph assistants, a patent-filed recommender (CrayFit), and production
+                systems for live enterprise clients, from ML pipelines to React and FastAPI.
+              </p>
+              <Button href="#portfolio">See My Works</Button>
             </div>
-          </div>
 
-          <div className="timeline-col">
-            <div className="timeline">
-              {timelineItems.map((item, i) => (
-                <div
-                  key={item.year}
-                  className="timeline-item"
-                  ref={el => itemsRef.current[i] = el}
-                >
-                  <div className={`timeline-dot${item.active ? ' active' : item.pulse ? ' pulse' : ''}`} />
-                  <div className="timeline-content">
-                    <div className="timeline-year">{item.year}</div>
-                    <h3>{item.title}</h3>
-                    <p>{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="hero-visual position-relative animate-on-scroll">
+              <img
+                src="/Images/profile.png"
+                alt="Aditya Mahale"
+                width="465"
+                className="hero-image"
+                onError={(e) => { e.target.src = '/meelo/6458c23afe2bc0522b3bc189_about-1.jpg' }}
+              />
+              <div className="star-badge">
+                <div className="label cc-rotate">Let&apos;s Work Together</div>
+              </div>
+              <img src="/meelo/64468b4c63698e178b507028_doodle-1.svg" alt="" className="doodle-shine" />
+              <img src="/meelo/64468b9bcfb0b14bcc9eef5a_doodle-2.svg" alt="" className="doodle-breeze" />
             </div>
           </div>
         </div>
